@@ -14,7 +14,7 @@ const app = express();
 // Serve static files from the 'dist' folder
 app.use(express.static(path.join(__dirname, 'dist')));
 
-// Middleware to parse JSON bodies
+
 app.use(express.json());
 
 // Connect to MongoDB
@@ -26,7 +26,6 @@ mongoose.connect(process.env.MONGODB_URI)
   console.error('Failed to connect to MongoDB:', err);
 });
 
-// Your API routes or other server-side logic here
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
