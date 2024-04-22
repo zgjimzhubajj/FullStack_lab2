@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 
 const ProjectAssignmentTable = () => {
   const [projectAssignments, setProjectAssignments] = useState([]);
@@ -7,11 +6,16 @@ const ProjectAssignmentTable = () => {
   useEffect(() => {
     const fetchProjectAssignments = async () => {
       try {
-        const response = await axios.get('/api/project_assignments');
-        if (Array.isArray(response.data)) { // Check if response is an array
-          setProjectAssignments(response.data.slice(0, 5)); 
+        const response = await fetch('/api/project_assignments');
+        if (response.ok) {
+          const data = await response.json();
+          if (Array.isArray(data)) {
+            setProjectAssignments(data);
+          } else {
+            console.error('Response is not an array:', data);
+          }
         } else {
-          console.error('Response is not an array:', response.data);
+          throw new Error('Failed to fetch project assignments');
         }
       } catch (error) {
         console.error('Error fetching project assignments:', error);
@@ -32,8 +36,7 @@ const ProjectAssignmentTable = () => {
         <thead>
           <tr>
             <th>Employee_ID</th>
-            <th>Employee_name</th>
-            <th>Project_name</th>
+            <th>Project_code</th>
             <th>Start_date</th>
           </tr>
         </thead>
@@ -41,8 +44,7 @@ const ProjectAssignmentTable = () => {
           {projectAssignments.map(assignment => (
             <tr key={assignment._id}>
               <td>{assignment.employee_id}</td>
-              <td>{assignment.employee_name}</td>
-              <td>{assignment.project_name}</td>
+              <td>{assignment.project_code}</td>
               <td>{assignment.start_date}</td>
             </tr>
           ))}
