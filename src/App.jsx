@@ -4,7 +4,7 @@ import ProjectAssignmentTable from './ProjectAssignmentTable.jsx';
 const App = () => {
   return (
     <div>
-      <h1>Your App Title</h1>
+      <h1>Fullstak Lab2</h1>
       <ProjectAssignmentTable />
     </div>
   );
