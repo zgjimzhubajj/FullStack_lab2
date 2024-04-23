@@ -24,7 +24,7 @@ const ProjectAssignmentTable = () => {
 
     fetchProjectAssignments();
 
-    const interval = setInterval(fetchProjectAssignments, 60000); // Refresh every minute
+    const interval = setInterval(fetchProjectAssignments, 5000);
 
     return () => clearInterval(interval);
   }, []);
