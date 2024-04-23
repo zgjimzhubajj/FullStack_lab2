@@ -1,0 +1,62 @@
+/* Table styling */
+table {
+    width: 90%;
+    margin: 0 auto; 
+    border-collapse: collapse;
+    border: 2px solid #6c00bd; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+    background-color: #f8f1e9; 
+  }
+  
+  th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  th {
+    background-color: #6c00bd;
+    color: #fff;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  
+  /* Alternate row background color */
+  tbody tr:nth-child(even) {
+    background-color: #f3e8db; 
+  }
+  
+  /* Hover effect */
+  tbody tr:hover {
+    background-color: rgba(148, 0, 211, 0.7); 
+  }
+  
+  /* Cell hover effect */
+  tbody td:hover {
+    background-color: rgba(144, 238, 144, 0.7);
+  }
+  
+  /* Table header hover effect */
+  thead th:hover {
+    background-color: rgba(148, 0, 211, 0.7); 
+  }
+  
+  
+  .highlighted {
+    background-color: #fff3c0 !important;
+  }
+  
+  
+  .center {
+    text-align: center;
+  }
+  
+  
+  h2 {
+    font-size: 28px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #6c00bd; 
+  }
+  

@@ -1,5 +1,6 @@
 import React from 'react';
 import ProjectAssignmentTable from './ProjectAssignmentTable.jsx';
+import './App.css';
 
 const App = () => {
   return (
