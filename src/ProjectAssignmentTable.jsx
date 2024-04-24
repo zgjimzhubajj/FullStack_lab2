@@ -10,26 +10,13 @@ const ProjectAssignmentTable = () => {
     const fetchProjectAssignments = async () => {
       try {
         const projectAssignmentsResponse = await fetch('/api/project_assignments');
-        const projectsResponse = await fetch('/api/projects');
-        const employeesResponse = await fetch('/api/employees');
 
-        if (projectAssignmentsResponse.ok && projectsResponse.ok && employeesResponse.ok) {
-          const projectAssignmentsData = await projectAssignmentsResponse.json();
-          const projectsData = await projectsResponse.json();
-          const employeesData = await employeesResponse.json();
+        if (projectAssignmentsResponse.ok) {
+          let projectAssignmentsData = await projectAssignmentsResponse.json();
 
-          const combinedData = projectAssignmentsData.map(assignment => {
-            const project = projectsData.find(project => project.project_code === assignment.project_code);
-            const employee = employeesData.find(employee => employee.employee_id === assignment.employee_id);
-            return {
-              ...assignment,
-              project_name: project ? project.project_name : 'Unknown Project',
-              full_name: employee ? employee.full_name : 'Unknown Employee'
-            };
-          });
-
+          // Here we sort the data based on the selected header and sortOrder
           if (sortBy) {
-            combinedData.sort((a, b) => {
+            projectAssignmentsData = projectAssignmentsData.sort((a, b) => {
               const aValue = a[sortBy];
               const bValue = b[sortBy];
               if (aValue < bValue) return sortOrder === 'asc' ? -1 : 1;
@@ -38,8 +25,16 @@ const ProjectAssignmentTable = () => {
             });
           }
 
-          const slicedData = combinedData.slice(0, 5);
-          setProjectAssignments(slicedData);
+          // While here we sort by start date to get the latest assignments as it was a requirement 
+          projectAssignmentsData = projectAssignmentsData.sort((a, b) => {
+            const aStartDate = new Date(a.start_date);
+            const bStartDate = new Date(b.start_date);
+            return sortOrder === 'asc' ? bStartDate - aStartDate : aStartDate - bStartDate;
+          });
+
+          //we set the latest 5 project assignments
+          const latestAssignments = projectAssignmentsData.slice(0, 5);
+          setProjectAssignments(latestAssignments);
         } else {
           throw new Error('Failed to fetch data');
         }
@@ -71,18 +66,18 @@ const ProjectAssignmentTable = () => {
       <table>
         <thead>
           <tr>
-            <th onClick={() => handleSort('employee_id')}>Employee_ID</th>
-            <th onClick={() => handleSort('full_name')}>Employee_name</th>
-            <th onClick={() => handleSort('project_name')}>Project_name</th>
+            <th onClick={() => handleSort('employee_id.employee_id')}>Employee_ID</th>
+            <th onClick={() => handleSort('employee_id.full_name')}>Employee_name</th>
+            <th onClick={() => handleSort('project_code.project_name')}>Project_name</th>
             <th onClick={() => handleSort('start_date')}>Start_date</th>
           </tr>
         </thead>
         <tbody>
           {projectAssignments.map(assignment => (
             <tr key={assignment._id}>
-              <td>{assignment.employee_id}</td>
-              <td>{assignment.full_name}</td>
-              <td>{assignment.project_name}</td>
+              <td>{assignment.employee_id.employee_id}</td>
+              <td>{assignment.employee_id.full_name}</td>
+              <td>{assignment.project_code.project_name}</td>
               <td>{assignment.start_date}</td>
             </tr>
           ))}

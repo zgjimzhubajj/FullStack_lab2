@@ -25,12 +25,11 @@ app.use(cors());
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
     console.log('Connected to MongoDB');
+    insertDoc();
   })
   .catch(err => {
     console.error('Failed to connect to MongoDB:', err);
   });
-
-
 
 // Employee Collection Endpoints
 app.get('/api/employees', async (req, res) => {
@@ -77,13 +76,16 @@ app.post('/api/projects', async (req, res) => {
 // Project Assignment Collection Endpoints
 app.get('/api/project_assignments', async (req, res) => {
   try {
-    const projectAssignments = await ProjectAssignment.find();
+    const projectAssignments = await ProjectAssignment.find()
+      .populate('employee_id') // we populate with Employee data with .populate
+      .populate('project_code'); 
     res.json(projectAssignments);
   } catch (err) {
     console.error('Error fetching project assignments:', err);
     res.status(500).json({ message: 'Internal Server Error' });
   }
 });
+
 
 app.post('/api/project_assignments', async (req, res) => {
   try {
