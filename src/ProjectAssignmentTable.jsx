@@ -3,6 +3,8 @@ import './ProjectAssignmentTable.css';
 
 const ProjectAssignmentTable = () => {
   const [projectAssignments, setProjectAssignments] = useState([]);
+  const [sortBy, setSortBy] = useState(null);
+  const [sortOrder, setSortOrder] = useState('asc'); 
 
   useEffect(() => {
     const fetchProjectAssignments = async () => {
@@ -26,14 +28,18 @@ const ProjectAssignmentTable = () => {
             };
           });
 
-        // We sort the combinedData array by start_date in descending order, so that we always get the latest project assignments
-        combinedData.sort((a, b) => new Date(b.start_date) - new Date(a.start_date));
-        
-        // Here we select only 5 items based on the (latest data)
-        const latestData = combinedData.slice(0, 5);
+          if (sortBy) {
+            combinedData.sort((a, b) => {
+              const aValue = a[sortBy];
+              const bValue = b[sortBy];
+              if (aValue < bValue) return sortOrder === 'asc' ? -1 : 1;
+              if (aValue > bValue) return sortOrder === 'asc' ? 1 : -1;
+              return 0;
+            });
+          }
 
-        setProjectAssignments(latestData);
-
+          const slicedData = combinedData.slice(0, 5);
+          setProjectAssignments(slicedData);
         } else {
           throw new Error('Failed to fetch data');
         }
@@ -47,7 +53,17 @@ const ProjectAssignmentTable = () => {
     const interval = setInterval(fetchProjectAssignments, 5000); 
 
     return () => clearInterval(interval);
-  }, []);
+  }, [sortBy, sortOrder]);
+
+
+  const handleSort = (header) => {
+    if (header === sortBy) {
+      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortBy(header);
+      setSortOrder('asc');
+    }
+  };
 
   return (
     <div>
@@ -55,10 +71,10 @@ const ProjectAssignmentTable = () => {
       <table>
         <thead>
           <tr>
-            <th>Employee_ID</th>
-            <th>Employee_name</th>
-            <th>Project_name</th>
-            <th>Start_date</th>
+            <th onClick={() => handleSort('employee_id')}>Employee_ID</th>
+            <th onClick={() => handleSort('full_name')}>Employee_name</th>
+            <th onClick={() => handleSort('project_name')}>Project_name</th>
+            <th onClick={() => handleSort('start_date')}>Start_date</th>
           </tr>
         </thead>
         <tbody>
