@@ -25,7 +25,6 @@ app.use(cors());
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
     console.log('Connected to MongoDB');
-    insertDoc();
   })
   .catch(err => {
     console.error('Failed to connect to MongoDB:', err);
