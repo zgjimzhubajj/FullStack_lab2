@@ -9,8 +9,8 @@ To run the Project Management Application locally:
 - Create an .env file and add the PORT and MONGODB_URI variables.
 - Start the Node server by running `node server.js` in another shell.
 - Start the Vite server by running `npm start` in VSCode.
-- Visit http://localhost:8080 in your web browser to access the Project Management Application.
-- `Tips`: Check the JSON package for the dependecies, so that you `Install` what is required by running `npm install (name of dependency)`
+- Visit `http://localhost:8080` in your web browser to access the Project Management Application.
+
 
 # Technologies Used
 - MongoDB
